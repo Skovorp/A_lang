@@ -1,12 +1,13 @@
 #include <stdio.h>
 
-#include "stack.c"
+#include "stack.h"
 
 struct machine {
 	struct stack *stack;
 };
 
-struct machine *machine_create(void){
+struct machine *machine_create(void)
+{
 	struct machine *X = (struct machine *)calloc(1, sizeof(struct machine));
 	X->stack = stack_create();
 
@@ -15,7 +16,7 @@ struct machine *machine_create(void){
 
 int machine_delete(struct machine *m)
 {
-	if (!m->stack){
+	if (!m->stack) {
 		free(m);
 
 		return 0;
@@ -27,33 +28,29 @@ int machine_delete(struct machine *m)
 	return 0;
 }
 
-
 int machine_push(struct machine *m, int new_element)
 {
-	if (!m->stack){
+	if (!m->stack) {
 		return -1;
-	}
-	else{
+	} else {
 		return (stack_push(m->stack, new_element));
 	}
 }
 
 int machine_pop(struct machine *m)
 {
-	if (!m->stack){
+	if (!m->stack) {
 		return -1;
-	}
-	else{
+	} else {
 		return (stack_pop(m->stack));
 	}
 }
 
 int machine_top(struct machine *m, int *top_element)
 {
-	if (!m->stack){
+	if (!m->stack) {
 		return -1;
-	}
-	else{
+	} else {
 		return (stack_top(m->stack, top_element));
 	}
 }
@@ -139,17 +136,17 @@ int machine_div(struct machine *m)
 
 	if (a != 0) {
 		r += machine_push(m, b / a);
-	}
-	else{
+	} else {
 		return -1;
 	}
 
 	return r;
 }
 
-int main(){
+int main()
+{
 	struct machine *M;
-	int *d ;
+	int *d;
 	int real;
 	d = &real;
 	M = machine_create();
