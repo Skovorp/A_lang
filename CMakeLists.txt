@@ -3,10 +3,12 @@ project(A_lang_machine)
 
 set(HEADERS
 	"${CMAKE_CURRENT_SOURCE_DIR}/stack.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/machine.h"
 )
 
 set(SOURCES
 	"${CMAKE_CURRENT_SOURCE_DIR}/stack.c"
+	"${CMAKE_CURRENT_SOURCE_DIR}/machine.c"
 	"${CMAKE_CURRENT_SOURCE_DIR}/main.c"
 )
 
