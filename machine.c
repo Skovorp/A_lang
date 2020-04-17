@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include "machine.h"
+#include "stack.h"
 
 struct machine *machine_create(void)
 {
@@ -24,16 +25,16 @@ int machine_delete(struct machine *m)
 	return 0;
 }
 
-int machine_push(struct machine *m, int new_element)
+int machine_push(struct machine *m, int *new_element)
 {
 	if (!m->stack) {
 		return -1;
 	} else {
-		return (stack_push(m->stack, new_element));
+		return (stack_push(m->stack, *new_element));
 	}
 }
 
-int machine_pop(struct machine *m)
+int machine_pop(struct machine *m, int *fake)
 {
 	if (!m->stack) {
 		return -1;
@@ -51,7 +52,7 @@ int machine_top(struct machine *m, int *top_element)
 	}
 }
 
-int machine_sum(struct machine *m)
+int machine_sum(struct machine *m, int *fake)
 {
 	int r = 0;
 
@@ -63,16 +64,16 @@ int machine_sum(struct machine *m)
 	pb = &b;
 
 	r += machine_top(m, pa);
-	r += machine_pop(m);
+	r += machine_pop(m, fake);
 	r += machine_top(m, pb);
-	r += machine_pop(m);
+	r += machine_pop(m, fake);
 
 	r += machine_push(m, a + b);
 
 	return r;
 }
 
-int machine_mul(struct machine *m)
+int machine_mul(struct machine *m, int *fake)
 {
 	int r = 0;
 
@@ -84,16 +85,16 @@ int machine_mul(struct machine *m)
 	pb = &b;
 
 	r += machine_top(m, pa);
-	r += machine_pop(m);
+	r += machine_pop(m, fake);
 	r += machine_top(m, pb);
-	r += machine_pop(m);
+	r += machine_pop(m, fake);
 
 	r += machine_push(m, a * b);
 
 	return r;
 }
 
-int machine_sub(struct machine *m)
+int machine_sub(struct machine *m, int *fake)
 {
 	int r = 0;
 
@@ -105,16 +106,16 @@ int machine_sub(struct machine *m)
 	pb = &b;
 
 	r += machine_top(m, pa);
-	r += machine_pop(m);
+	r += machine_pop(m, fake);
 	r += machine_top(m, pb);
-	r += machine_pop(m);
+	r += machine_pop(m, fake);
 
 	r += machine_push(m, b - a);
 
 	return r;
 }
 
-int machine_div(struct machine *m)
+int machine_div(struct machine *m, int *fake)
 {
 	int r = 0;
 
@@ -126,9 +127,9 @@ int machine_div(struct machine *m)
 	pb = &b;
 
 	r += machine_top(m, pa);
-	r += machine_pop(m);
+	r += machine_pop(m, fake);
 	r += machine_top(m, pb);
-	r += machine_pop(m);
+	r += machine_pop(m, fake);
 
 	if (a != 0) {
 		r += machine_push(m, b / a);
