@@ -3,8 +3,9 @@ project(untitled1 C)
 
 set(HEADERS
 	"${CMAKE_CURRENT_SOURCE_DIR}/stack.h"
-	"${CMAKE_CURRENT_SOURCE_DIR}/machine.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/instruction.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/machine.h"
+
 )
 
 set(SOURCES
