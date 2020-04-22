@@ -1,3 +1,0 @@
-/home/andrew/Documents/personal/A_lang/build/CMakeFiles/rebuild_cache.dir
-/home/andrew/Documents/personal/A_lang/build/CMakeFiles/untitled1.dir
-/home/andrew/Documents/personal/A_lang/build/CMakeFiles/edit_cache.dir

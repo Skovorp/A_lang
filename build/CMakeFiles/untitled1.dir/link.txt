@@ -1,1 +1,0 @@
-/usr/bin/clang    CMakeFiles/untitled1.dir/stack.c.o CMakeFiles/untitled1.dir/machine.c.o CMakeFiles/untitled1.dir/instruction.c.o CMakeFiles/untitled1.dir/main.c.o  -o untitled1 
