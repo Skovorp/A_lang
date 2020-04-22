@@ -18,19 +18,19 @@ int machine_delete(struct machine *m)
 	if (!m->stack) {
 		free(m);
 
-		return 0;
+		return SUCCESS;
 	}
 
 	stack_delete(m->stack);
 	free(m);
 
-	return 0;
+	return SUCCESS;
 }
 
 int machine_push(struct machine *m, struct instruction *Inst)
 {
 	if (!m->stack) {
-		return -1;
+		return FAILURE;
 	} else {
 		return (stack_push(m->stack, *Inst->operand));
 	}
@@ -39,7 +39,7 @@ int machine_push(struct machine *m, struct instruction *Inst)
 int machine_pop(struct machine *m, struct instruction *Inst)
 {
 	if (!m->stack) {
-		return -1;
+		return FAILURE;
 	} else {
 		return (stack_pop(m->stack));
 	}
@@ -48,7 +48,7 @@ int machine_pop(struct machine *m, struct instruction *Inst)
 int machine_top(struct machine *m, struct instruction *Inst)
 {
 	if (!m->stack) {
-		return -1;
+		return FAILURE;
 	} else {
 		return (stack_top(m->stack, Inst->operand));
 	}
@@ -56,31 +56,6 @@ int machine_top(struct machine *m, struct instruction *Inst)
 
 int machine_sum(struct machine *m, struct instruction *Inst)
 {
-	/* Это пиздец! Замедление и увеличение памяти в несколько раз!
-	int r = 0;
-
-	int a;
-	int b;
-	struct instruction Inst1;
-	struct instruction Inst2;
-	struct instruction *pInst1;   -- эм
-	struct instruction *pInst2;   -- вот
-	pInst1 = &Inst1;              -- нахуя
-	pInst2 = &Inst2;              -- такая кострукция
-	pInst1->operand = &a;         -- ебать
-	pInst2->operand = &b;         -- пиздец
-
-	r += machine_top(pInst1);
-	r += machine_pop(Inst);
-	r += machine_top(pInst2);
-	r += machine_pop(Inst);
-
-	Inst->operand = *Inst1.operand + *Inst2.operand;
-	r += machine_push(Inst);
-	
-	return r;
-	*/
-
 	int operand0, operand1;
 	int status;
 
@@ -114,67 +89,103 @@ int machine_sum(struct machine *m, struct instruction *Inst)
 
 int machine_mul(struct machine *m, struct instruction *Inst)
 {
-	int r = 0;
+	int operand0, operand1;
+	int status;
 
-	int a;
-	int b;
-	int *pa;
-	int *pb;
-	pa = &a;
-	pb = &b;
+	status = stack_top(m->stack, &operand0);
+	if (FAILED(status)) {
+		return FAILURE;
+	}
 
-	r += machine_top(m, pa);
-	r += machine_pop(m, fake);
-	r += machine_top(m, pb);
-	r += machine_pop(m, fake);
+	status = stack_pop(m->stack);
+	if (FAILED(status)) {
+		return FAILURE;
+	}
 
-	r += machine_push(m, a * b);
+	status = stack_top(m->stack, &operand1);
+	if (FAILED(status)) {
+		return FAILURE;
+	}
 
-	return r;
+	status = stack_pop(m->stack);
+	if (FAILED(status)) {
+		return FAILURE;
+	}
+
+	status = stack_push(m->stack, operand0 * operand1);
+	if (FAILED(status)) {
+		return FAILURE;
+	}
+
+	return SUCCESS;
 }
 
 int machine_sub(struct machine *m, struct instruction *Inst)
 {
-	int r = 0;
+	int operand0, operand1;
+	int status;
 
-	int a;
-	int b;
-	int *pa;
-	int *pb;
-	pa = &a;
-	pb = &b;
+	status = stack_top(m->stack, &operand0);
+	if (FAILED(status)) {
+		return FAILURE;
+	}
 
-	r += machine_top(m, pa);
-	r += machine_pop(m, fake);
-	r += machine_top(m, pb);
-	r += machine_pop(m, fake);
+	status = stack_pop(m->stack);
+	if (FAILED(status)) {
+		return FAILURE;
+	}
 
-	r += machine_push(m, b - a);
+	status = stack_top(m->stack, &operand1);
+	if (FAILED(status)) {
+		return FAILURE;
+	}
 
-	return r;
+	status = stack_pop(m->stack);
+	if (FAILED(status)) {
+		return FAILURE;
+	}
+
+	status = stack_push(m->stack, operand1 - operand0);
+	if (FAILED(status)) {
+		return FAILURE;
+	}
+
+	return SUCCESS;
 }
 
 int machine_div(struct machine *m, struct instruction *Inst)
 {
-	int r = 0;
+	int operand0, operand1;
+	int status;
 
-	int a;
-	int b;
-	int *pa;
-	int *pb;
-	pa = &a;
-	pb = &b;
-
-	r += machine_top(m, pa);
-	r += machine_pop(m, fake);
-	r += machine_top(m, pb);
-	r += machine_pop(m, fake);
-
-	if (a != 0) {
-		r += machine_push(m, b / a);
-	} else {
-		return -1;
+	status = stack_top(m->stack, &operand0);
+	if (FAILED(status)) {
+		return FAILURE;
 	}
 
-	return r;
+	status = stack_pop(m->stack);
+	if (FAILED(status)) {
+		return FAILURE;
+	}
+
+	status = stack_top(m->stack, &operand1);
+	if (FAILED(status)) {
+		return FAILURE;
+	}
+
+	status = stack_pop(m->stack);
+	if (FAILED(status)) {
+		return FAILURE;
+	}
+
+	if (operand1 == 0) {
+		return FAILURE;
+	}
+
+	status = stack_push(m->stack, operand1 / operand0);
+	if (FAILED(status)) {
+		return FAILURE;
+	}
+
+	return SUCCESS;
 }

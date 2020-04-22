@@ -5,7 +5,8 @@
 #include "machine.h"
 #include "instruction.h"
 
-int main()
+/*
+int main1()
 {
 	struct machine *M;
 	int *dp;
@@ -53,6 +54,37 @@ int main()
 	printf("N5 %i \n", *dp);
 
 	machine_delete(M);
+
+	return 0;
+}
+*/
+
+int main()
+{
+	struct instruction *I = instruction_create();
+	struct machine *M = machine_create();
+	int oper;
+	int status;
+	I->operand = &oper;
+
+	I->code = 0;
+	oper = 10;
+	status = machine_execute_instruction(M, I);
+	printf("%i \n", status);
+
+	I->code = 0;
+	oper = 5;
+	status = machine_execute_instruction(M, I);
+	printf("%i \n", status);
+
+	I->code = 6;
+	status = machine_execute_instruction(M, I);
+	printf("%i \n", status);
+
+	I->code = 2;
+	machine_execute_instruction(M, I);
+
+	printf("%i", oper);
 
 	return 0;
 }

@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include "stack.h"
+#include "error.h"
 
 struct stack *stack_create(void)
 {
@@ -14,30 +15,30 @@ int stack_delete(struct stack *stk)
 	}
 
 	free((void *)stk);
-	return 0;
+	return SUCCESS;
 }
 
 int stack_pop(struct stack *stk)
 {
+	if ((!stk->data) || (stk->size == 0)) {
+		return FAILURE;
+	}
+
 	stk->data = realloc((void *)stk->data, (stk->size - 1) * sizeof(int));
 	stk->size--;
 
-	if ((!stk->data) || (stk->size == 0)) {
-		return -1;
-	}
-
-	return 0;
+	return SUCCESS;
 }
 
 int stack_top(struct stack *stk, int *top_element)
 {
 	if ((!top_element) || (stk->size == 0)) {
-		return -1;
+		return FAILURE;
 	}
 
 	*top_element = stk->data[stk->size - 1];
 
-	return 0;
+	return SUCCESS;
 }
 
 int stack_push(struct stack *stk, int new_element)
@@ -46,10 +47,10 @@ int stack_push(struct stack *stk, int new_element)
 	stk->size++;
 
 	if (!stk->data) {
-		return -1;
+		return FAILURE;
 	}
 
 	stk->data[stk->size - 1] = new_element;
 
-	return 0;
+	return SUCCESS;
 }
