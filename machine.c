@@ -1,8 +1,9 @@
 #include <stdlib.h>
 
+#include "error.h"
+#include "instruction.h"
 #include "machine.h"
 #include "stack.h"
-#include "instruction.h"
 
 struct machine *machine_create(void)
 {
@@ -55,18 +56,19 @@ int machine_top(struct machine *m, struct instruction *Inst)
 
 int machine_sum(struct machine *m, struct instruction *Inst)
 {
+	/* Это пиздец! Замедление и увеличение памяти в несколько раз!
 	int r = 0;
 
 	int a;
 	int b;
 	struct instruction Inst1;
 	struct instruction Inst2;
-	struct instruction *pInst1;
-	struct instruction *pInst2;
-	pInst1 = &Inst1;
-	pInst2 = &Inst2;
-	pInst1->operand = &a;
-	pInst2->operand = &b;
+	struct instruction *pInst1;   -- эм
+	struct instruction *pInst2;   -- вот
+	pInst1 = &Inst1;              -- нахуя
+	pInst2 = &Inst2;              -- такая кострукция
+	pInst1->operand = &a;         -- ебать
+	pInst2->operand = &b;         -- пиздец
 
 	r += machine_top(pInst1);
 	r += machine_pop(Inst);
@@ -75,8 +77,39 @@ int machine_sum(struct machine *m, struct instruction *Inst)
 
 	Inst->operand = *Inst1.operand + *Inst2.operand;
 	r += machine_push(Inst);
-
+	
 	return r;
+	*/
+
+	int operand0, operand1;
+	int status;
+
+	status = stack_top(m->stack, &operand0);
+	if (FAILED(status)) {
+		return FAILURE;
+	}
+
+	status = stack_pop(m->stack);
+	if (FAILED(status)) {
+		return FAILURE;
+	}
+
+	status = stack_top(m->stack, &operand1);
+	if (FAILED(status)) {
+		return FAILURE;
+	}
+
+	status = stack_pop(m->stack);
+	if (FAILED(status)) {
+		return FAILURE;
+	}
+
+	status = stack_push(m->stack, operand0 + operand1);
+	if (FAILED(status)) {
+		return FAILURE;
+	}
+
+	return SUCCESS;
 }
 
 int machine_mul(struct machine *m, struct instruction *Inst)

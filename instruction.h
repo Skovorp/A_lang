@@ -6,6 +6,8 @@ struct instruction {
 	int *operand;
 };
 
+struct machine;
+
 int machine_execute_instruction(struct machine *m, struct instruction *inst);
 
 #endif //A_LANG_INSTRUCTION_H
