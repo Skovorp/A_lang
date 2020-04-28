@@ -6,6 +6,15 @@ struct instruction {
 	int *operand;
 };
 
+#define INSTRUCTION_PUSH 0;
+#define INSTRUCTION_POP 1;
+#define INSTRUCTION_TOP 2;
+#define INSTRUCTION_SUM 3;
+#define INSTRUCTION_SUB 4;
+#define INSTRUCTION_MUL 5;
+#define INSTRUCTION_DIV 6;
+#define MACHINE_INSTRUCTION_NO 7
+
 struct machine;
 
 struct instruction *instruction_create(void);

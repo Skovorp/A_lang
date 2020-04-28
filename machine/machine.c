@@ -7,10 +7,10 @@
 
 struct machine *machine_create(void)
 {
-	struct machine *X = (struct machine *)calloc(1, sizeof(struct machine));
-	X->stack = stack_create();
+	struct machine *m = (struct machine *)calloc(1, sizeof(struct machine));
+	m->stack = stack_create();
 
-	return X;
+	return m;
 }
 
 int machine_delete(struct machine *m)
@@ -27,16 +27,16 @@ int machine_delete(struct machine *m)
 	return SUCCESS;
 }
 
-int machine_push(struct machine *m, struct instruction *Inst)
+int machine_push(struct machine *m, struct instruction *inst)
 {
 	if (!m->stack) {
 		return FAILURE;
 	} else {
-		return (stack_push(m->stack, *Inst->operand));
+		return (stack_push(m->stack, *inst->operand));
 	}
 }
 
-int machine_pop(struct machine *m, struct instruction *Inst)
+int machine_pop(struct machine *m, struct instruction *inst)
 {
 	if (!m->stack) {
 		return FAILURE;
@@ -45,16 +45,16 @@ int machine_pop(struct machine *m, struct instruction *Inst)
 	}
 }
 
-int machine_top(struct machine *m, struct instruction *Inst)
+int machine_top(struct machine *m, struct instruction *inst)
 {
 	if (!m->stack) {
 		return FAILURE;
 	} else {
-		return (stack_top(m->stack, Inst->operand));
+		return (stack_top(m->stack, inst->operand));
 	}
 }
 
-int machine_sum(struct machine *m, struct instruction *Inst)
+int machine_sum(struct machine *m, struct instruction *inst)
 {
 	int operand0, operand1;
 	int status;
@@ -87,7 +87,7 @@ int machine_sum(struct machine *m, struct instruction *Inst)
 	return SUCCESS;
 }
 
-int machine_mul(struct machine *m, struct instruction *Inst)
+int machine_mul(struct machine *m, struct instruction *inst)
 {
 	int operand0, operand1;
 	int status;
@@ -120,7 +120,7 @@ int machine_mul(struct machine *m, struct instruction *Inst)
 	return SUCCESS;
 }
 
-int machine_sub(struct machine *m, struct instruction *Inst)
+int machine_sub(struct machine *m, struct instruction *inst)
 {
 	int operand0, operand1;
 	int status;
@@ -153,7 +153,7 @@ int machine_sub(struct machine *m, struct instruction *Inst)
 	return SUCCESS;
 }
 
-int machine_div(struct machine *m, struct instruction *Inst)
+int machine_div(struct machine *m, struct instruction *inst)
 {
 	int operand0, operand1;
 	int status;
