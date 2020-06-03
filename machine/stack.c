@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <assert.h>
 
 #include "stack.h"
 #include "error.h"
@@ -10,33 +11,36 @@ struct stack *stack_create(void)
 
 int stack_delete(struct stack *stk)
 {
-	if (!stk){
+	if (!stk) {
 		return SUCCESS;
 	}
-
-	if (stk->data) {
-		free((void *)stk->data);
-	}
-
+	
+	free((void *)stk->data);
 	free((void *)stk);
+	
 	return SUCCESS;
 }
 
 int stack_pop(struct stack *stk)
 {
-	if ((!stk->data) || (stk->size == 0)) {
+	assert(stk);
+	
+	if (!stk->data || !stk->size) {
 		return FAILURE;
 	}
 
-	stk->data = realloc((void *)stk->data, (stk->size - 1) * sizeof(int));
 	stk->size--;
+	stk->data = realloc((void *)stk->data, stk->size * sizeof(int));
 
 	return SUCCESS;
 }
 
 int stack_top(struct stack *stk, int *top_element)
 {
-	if ((!top_element) || (stk->size == 0)) {
+	assert(stk);
+	assert(top_element);
+	
+	if (!stk->data || !stk->size) {
 		return FAILURE;
 	}
 
@@ -47,8 +51,10 @@ int stack_top(struct stack *stk, int *top_element)
 
 int stack_push(struct stack *stk, int new_element)
 {
-	stk->data = realloc((void *)stk->data, (stk->size + 1) * sizeof(int));
+	assert(stk);
+	
 	stk->size++;
+	stk->data = realloc((void *)stk->data, stk->size * sizeof(int));
 
 	if (!stk->data) {
 		return FAILURE;
