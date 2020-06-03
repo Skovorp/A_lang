@@ -11,10 +11,6 @@ struct instruction *instruction_create(void)
 
 int instruction_delete(struct instruction *inst)
 {
-	if (inst->operand){
-		free(inst->operand);
-	}
-
 	free(inst);
 
 	return SUCCESS;

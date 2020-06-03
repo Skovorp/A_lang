@@ -10,6 +10,10 @@ struct stack *stack_create(void)
 
 int stack_delete(struct stack *stk)
 {
+	if (!stk){
+		return SUCCESS;
+	}
+
 	if (stk->data) {
 		free((void *)stk->data);
 	}
