@@ -3,8 +3,10 @@
 #ifndef A_LANG_INSTRUCTION_H
 #define A_LANG_INSTRUCTION_H
 
+#include <stdint.h>
+
 struct instruction {
-	unsigned char code;
+	uint8_t code;
 	int64_t operand;
 };
 
@@ -15,11 +17,12 @@ struct instruction {
 #define INSTRUCTION_SUB 4
 #define INSTRUCTION_MUL 5
 #define INSTRUCTION_DIV 6
-#define MACHINE_INSTRUCTION_NO 7
+
+#define INSTRUCTIONS_NO 7
 
 struct machine;
 
 struct instruction *instruction_create(void);
 int machine_execute_instruction(struct machine *m, struct instruction *inst);
 
-#endif //A_LANG_INSTRUCTION_H
+#endif /* A_LANG_INSTRUCTION_H */
